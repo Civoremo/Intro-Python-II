@@ -100,7 +100,9 @@ currentPlayer = Player('Johnny', 'outside')
 
 print('\n\n')
 print('====================================\n')
-print('|          Adventure  Quest        |\n')
+print('|          Pointless  Quest        |\n')
+print('|        --------------------      |\n')
+print('|              Q to quit           |\n')
 print('====================================\n')
 
 while True:
@@ -110,7 +112,7 @@ while True:
         if currentPlayer.room == key:
             print(f'Location info: {value}')
     available_directions()
-    cmd = input('\nType command: ')
+    cmd = input('\nEnter command -> ')
     player_movement(cmd)
     if cmd == 'q' or cmd == 'Q':
         print('Goodbye!')
