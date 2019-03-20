@@ -17,4 +17,4 @@ class Room:
                 self.items.pop()
 
     def __str__(self):
-        return (f'{self.location}. {self.description}\nVisible items: {self.items}')
+        return (f'{self.location} -- {self.items}\n + {self.description}')
