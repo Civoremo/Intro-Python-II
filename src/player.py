@@ -3,11 +3,12 @@
 
 
 class Player:
-    def __init__(self, name, room):
-        self.room = room
+    def __init__(self, name, location):
+        self.name = name
+        self.location = location
 
     def __str__(self):
-        return f'Your location: "{self.room}"'
+        return f'Your location: "{self.location}"'
 
     def __repr__(self):
-        return f"Your location: '{self.room}'"
+        return f"Your location: '{self.location}'"
