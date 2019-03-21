@@ -172,3 +172,8 @@ while True:
         print(Fore.YELLOW +
               f'\nGoodbye {currentPlayer.name}' + Style.RESET_ALL)
         break
+    if currentPlayer.schmekels > 450:
+        print(Fore.GREEN +
+              "You have earned enough schmekles; time to retire!\n" + Style.RESET_ALL)
+        print(Fore.GREEN + "Try 'Pointless Quest' again.\n" + Style.RESET_ALL)
+        break
