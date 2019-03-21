@@ -3,10 +3,11 @@
 
 
 class Room:
-    def __init__(self, location, description, items):
+    def __init__(self, location, description, items, is_light=False):
         self.location = location
         self.description = description
         self.items = items
+        self.is_light = is_light
 
     def addItemToRoom(self, item):
         self.items.append(item)

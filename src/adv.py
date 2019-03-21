@@ -34,52 +34,52 @@ item = {
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons.", []),
+                     "North of you, the cave mount beckons.", [], True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", [item['lamp']]),
+passages run north and east.""", [item['lamp']], True),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", [item['flower'], item['artibact']]),
+the distance, but there is no way across the chasm.""", [item['flower'], item['artibact']], True),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", [item['slime']]),
+to north. The smell of gold permeates the air.""", [item['slime']], False),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south.""", [item['artiwact'], item['pouch']]),
+earlier adventurers. The only exit is to the south.""", [item['artiwact'], item['pouch']], False),
 
     'chamber': Room('Bed Chamber', """A finely furnished bed chamber, all the things
-are covered in dust and cob webs from years of neglect""", [item['mirror']]),
+are covered in dust and cob webs from years of neglect""", [item['mirror']], True),
 
     'cliff': Room('Cliff Edge', """Careful now, one small slip up and this could be the
-end of your adventure.""", [item['flower']]),
+end of your adventure.""", [item['flower']], True),
 
-    'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [item['sword']]),
+    'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [item['sword']], False),
 
-    'dungeon': Room('Dungeon', """Torture devices are scattered throughout the room""", [item['artiract']]),
+    'dungeon': Room('Dungeon', """Torture devices are scattered throughout the room""", [item['artiract']], False),
 
     'armory': Room('Armory', """A large room that used to hold a stockpile of weapons
-but now it sits mostly empty""", [item['bow'], item['arrows']]),
+but now it sits mostly empty""", [item['bow'], item['arrows']], False),
 
-    'cellar': Room('Wine Cellar', 'All the bottles are smashed. What a shame.', [item['shield']]),
+    'cellar': Room('Wine Cellar', 'All the bottles are smashed. What a shame.', [item['shield']], False),
 
-    'tunnel': Room('Long Corridor', 'Dark and narrow corridor, hard to see where it leads.', [item['slingshot']]),
+    'tunnel': Room('Long Corridor', 'Dark and narrow corridor, hard to see where it leads.', [item['slingshot']], False),
 
-    'fountain': Room('Fountain of Youth', 'Elegantly decorated fountain; ice cold water still gushing.', [item['emerald'], item['ruby']]),
+    'fountain': Room('Fountain of Youth', 'Elegantly decorated fountain; ice cold water still gushing.', [item['emerald'], item['ruby']], True),
 
     'alchemy': Room('Alchemy Chamber', """Elaborate contraptions scattered throughout the room
-accompanied by an unbearable stench.""", [item['jar'], item['coins']]),
+accompanied by an unbearable stench.""", [item['jar'], item['coins']], False),
 
-    'stairway': Room('Winding Stairway', """Caution, uneven steps!""", [item['pebbles']]),
+    'stairway': Room('Winding Stairway', """Caution, uneven steps!""", [item['pebbles']], False),
 
-    'storage': Room('Storage Room', """Piles of junk knocked down on the floor""", []),
+    'storage': Room('Storage Room', """Piles of junk knocked down on the floor""", [], False),
 
     'lavatory': Room('Lavatory', """Ocupado! sign tossed on the floor; doesn't
-look like it was cleaned any time recently""", [item['crown']]),
+look like it was cleaned any time recently""", [item['crown']], True),
 
-    'library': Room('Grand Library', 'Windows appear to be painted dark as to stop light from coming in', [item['chalise']]),
+    'library': Room('Grand Library', 'Windows appear to be painted dark as to stop light from coming in', [item['chalise']], False),
 }
 
 
@@ -121,23 +121,6 @@ room['storage'].n_to = room['stairway']
 room['library'].n_to = room['storage']
 room['library'].e_to = room['foyer']
 room['foyer'].w_to = room['library']
-
-#
-# Main
-#
-
-# Make a new player object that is currently in the 'outside' room.
-
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
 
 
 def player_movement(player_input):
@@ -206,22 +189,36 @@ def player_action(player_input):
     if len(player_input.split(' ')) > 1:
 
         if commands[0] == 'take':
-            for i in currentPlayer.location.items:
-                if commands[1].lower() == i.name.lower():
-                    currentPlayer.addItemToUser(i)
-                    currentPlayer.location.removeItemFromRoom(i)
-                    print(Fore.YELLOW +
-                          f'\nYou picke up {i}\n' + Style.RESET_ALL)
-                break
+            if currentPlayer.location.is_light == True:
+                for i in currentPlayer.location.items:
+                    if commands[1].lower() == i.name.lower():
+                        currentPlayer.addItemToUser(i)
+                        currentPlayer.location.removeItemFromRoom(i)
+                        print(Fore.YELLOW +
+                              f'\nYou picked up {i}\n' + Style.RESET_ALL)
+                    break
+                else:
+                    print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
             else:
-                print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
+                print(Fore.YELLOW +
+                      "\nGood luck finding that in the dark!" + Style.RESET_ALL)
         elif commands[0] == 'drop':
+            cmd = 'n'
             for i in currentPlayer.items:
                 if commands[1].lower() == i.name.lower():
-                    currentPlayer.removeItemFromUser(i)
-                    currentPlayer.location.addItemToRoom(i)
-                    print(Fore.YELLOW +
-                          f'\nYou dropped {i}\n' + Style.RESET_ALL)
+                    if i.name.lower() == 'lamp':
+                        print(
+                            Fore.YELLOW + "\nIt's not wise to drop your source of light!" + Style.RESET_ALL)
+                        cmd = input('Still want to drop it? -> ')
+                    if i.name.lower() != 'lamp' or cmd.lower() == 'y':
+                        currentPlayer.removeItemFromUser(i)
+                        currentPlayer.location.addItemToRoom(i)
+                        print(Fore.YELLOW +
+                              f'\nYou dropped {i}\n' + Style.RESET_ALL)
+                    elif cmd.lower() == 'n':
+                        print(Fore.YELLOW +
+                              f'\nYou kept the {i}\n' + Style.RESET_ALL)
+                        cmd = 'n'
                 break
             else:
                 print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
@@ -293,10 +290,13 @@ print(f"\n\n{currentPlayer.name}'s adventure begins!\n\n")
 # Main Game Loop
 while True:
     locationItems = []
-    print(Fore.BLUE + f'{currentPlayer.location.location}\n' +
-          Style.RESET_ALL + f'{currentPlayer.location.description}')
-    print(Fore.GREEN + f'{currentPlayer.location.items}' + Style.RESET_ALL)
-    available_directions()
+    if currentPlayer.location.is_light == True:
+        print(Fore.BLUE + f'{currentPlayer.location.location}\n' +
+              Style.RESET_ALL + f'{currentPlayer.location.description}')
+        print(Fore.GREEN + f'{currentPlayer.location.items}' + Style.RESET_ALL)
+        available_directions()
+    else:
+        print(Fore.YELLOW + "It's pitch black!\n" + Style.RESET_ALL)
     cmd = input('\nEnter command -> ')
     player_movement(cmd)
     player_action(cmd)
