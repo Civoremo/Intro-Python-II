@@ -158,6 +158,8 @@ def player_movement(player_input):
                       ' -> Used with "item_name" to pick up item')
                 print(Back.BLUE + ' drop ' + Style.RESET_ALL +
                       '-> Used with "item_name" to drop item')
+                print(Back.BLUE + ' use ' + Style.RESET_ALL +
+                      '-> Used with "item_name" to use item in inventory')
                 print(Back.BLUE + ' i ' + Style.RESET_ALL +
                       '-> Checks your inventory')
                 print(Back.BLUE + ' N,E,S,W ' + Style.RESET_ALL +
@@ -187,8 +189,7 @@ def player_action(player_input):
     # if first command is not "take" or "drop", user will be asked to type command again
 
     if len(player_input.split(' ')) > 1:
-
-        if commands[0] == 'take':
+        if commands[0] == 'take':   # take command
             if currentPlayer.location.is_light == True:
                 for i in currentPlayer.location.items:
                     if commands[1].lower() == i.name.lower():
@@ -196,32 +197,46 @@ def player_action(player_input):
                         currentPlayer.location.removeItemFromRoom(i)
                         print(Fore.YELLOW +
                               f'\nYou picked up {i}\n' + Style.RESET_ALL)
-                    break
+                        break
                 else:
                     print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
             else:
                 print(Fore.YELLOW +
                       "\nGood luck finding that in the dark!" + Style.RESET_ALL)
-        elif commands[0] == 'drop':
+        elif commands[0] == 'drop':     # drop command
             cmd = 'n'
             for i in currentPlayer.items:
                 if commands[1].lower() == i.name.lower():
                     if i.name.lower() == 'lamp':
                         print(
                             Fore.YELLOW + "\nIt's not wise to drop your source of light!" + Style.RESET_ALL)
-                        cmd = input('Still want to drop it? -> ')
+                        cmd = input('Still want to drop it [y,n]? -> ')
                     if i.name.lower() != 'lamp' or cmd.lower() == 'y':
                         currentPlayer.removeItemFromUser(i)
                         currentPlayer.location.addItemToRoom(i)
                         print(Fore.YELLOW +
                               f'\nYou dropped {i}\n' + Style.RESET_ALL)
+                        break
                     elif cmd.lower() == 'n':
                         print(Fore.YELLOW +
                               f'\nYou kept the {i}\n' + Style.RESET_ALL)
                         cmd = 'n'
-                break
+                        break
             else:
                 print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
+        elif commands[0] == 'use':  # use command
+            for i in currentPlayer.items:
+                if commands[1].lower() == i.name.lower():
+                    if currentPlayer.location.is_light == False and i.name.lower() == 'lamp':
+                        currentPlayer.location.is_light = True
+                        print(
+                            Fore.YELLOW + '\nThe lamp illuminates the entire room and you can finally see.\n' + Style.RESET_ALL)
+                        break
+                    else:
+                        print(
+                            Fore.YELLOW + "\nThis won't do anything, it's already bright in here.\n" + Style.RESET_ALL)
+            else:
+                print(Fore.RED + "\nYou don't have that item.\n" + Style.RESET_ALL)
         else:
             print(
                 Fore.RED + '\n--- Not a valid command, Try Again! ---\n' + Style.RESET_ALL)
