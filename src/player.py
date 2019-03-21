@@ -5,10 +5,11 @@ init(convert=True)
 
 
 class Player:
-    def __init__(self, name, location, items):
+    def __init__(self, name, location, items, schmekels=0):
         self.name = name
         self.location = location
         self.items = items
+        self.schmekels = schmekels
 
     def __str__(self):
         return f'Your location: "{self.location}"'
@@ -58,7 +59,8 @@ class Player:
                       f"\n{self.name}'s Inventory" + Style.RESET_ALL)
                 for i in self.items:
                     inventory.append(i)
-                print(f'{inventory}\n')
+                print(f'Items: {inventory}')
+                print(f'Schmekels: {self.schmekels}\n')
             elif action.lower() == 'help':
                 print('\nKeywords')
                 print(Back.BLUE + ' take ' + Style.RESET_ALL +
@@ -86,7 +88,9 @@ class Player:
         commands = action.split(" ")
         if len(action.split(' ')) == 2:
             if commands[0] == 'take':
-                if self.location.is_light == True:
+                if self.location.location.lower() == 'vendor':
+                    print(Fore.RED + '\nThat would be stealing.\n' + Style.RESET_ALL)
+                elif self.location.is_light == True:
                     for i in self.location.items:
                         if commands[1].lower() == i.name.lower():
                             self.addItemToUser(i)
@@ -106,26 +110,40 @@ class Player:
         commands = action.split(" ")
         if len(action.split(' ')) == 2:
             if commands[0] == 'drop':
-                cmd = 'n'
-                for i in self.items:
-                    if commands[1].lower() == i.name.lower():
-                        if i.name.lower() == 'lamp':
-                            print(
-                                Fore.YELLOW + "\nIt's not wise to drop your source of light!" + Style.RESET_ALL)
-                            cmd = input('Still want to drop it [y,n]? -> ')
-                        if i.name.lower() != 'lamp' or cmd.lower() == 'y':
-                            self.removeItemFromUser(i)
-                            self.location.addItemToRoom(i)
-                            print(Fore.YELLOW +
-                                  f'\nYou dropped {i}\n' + Style.RESET_ALL)
-                            break
-                        elif cmd.lower() == 'n':
-                            print(Fore.YELLOW +
-                                  f'\nYou kept the {i}\n' + Style.RESET_ALL)
-                            cmd = 'n'
-                            break
-                else:
-                    print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
+                if self.location.location.lower() == 'vendor':
+                    for i in self.items:
+                        if commands[1].lower() == i.name.lower():
+                            if hasattr(i, 'value'):
+                                print(
+                                    Fore.YELLOW + f'\nVendor is happy to pay you {i.value} schmekels.\n' + Style.RESET_ALL)
+                                self.schmekels += i.value
+                                self.removeItemFromUser(i)
+                                self.location.addItemToRoom(i)
+                                break
+                    else:
+                        print(Fore.RED + '\nVendor does not want that.\n' +
+                              Style.RESET_ALL)
+                if self.location.location.lower() != 'vendor':
+                    cmd = 'n'
+                    for i in self.items:
+                        if commands[1].lower() == i.name.lower():
+                            if i.name.lower() == 'lamp':
+                                print(
+                                    Fore.YELLOW + "\nIt's not wise to drop your source of light!" + Style.RESET_ALL)
+                                cmd = input('Still want to drop it [y,n]? -> ')
+                            if i.name.lower() != 'lamp' or cmd.lower() == 'y':
+                                self.removeItemFromUser(i)
+                                self.location.addItemToRoom(i)
+                                print(Fore.YELLOW +
+                                      f'\nYou dropped {i}\n' + Style.RESET_ALL)
+                                break
+                            elif cmd.lower() == 'n':
+                                print(Fore.YELLOW +
+                                      f'\nYou kept the {i}\n' + Style.RESET_ALL)
+                                cmd = 'n'
+                                break
+                    else:
+                        print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
         else:
             return None
 

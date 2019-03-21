@@ -80,6 +80,8 @@ accompanied by an unbearable stench.""", [item['jar'], item['coins']], False),
 look like it was cleaned any time recently""", [item['crown']], True),
 
     'library': Room('Grand Library', 'Windows appear to be painted dark as to stop light from coming in', [item['chalise']], False),
+
+    'vendor': Room('Vendor', 'A place to sell valuables and make some schmekels.', [], True),
 }
 
 
@@ -121,6 +123,8 @@ room['storage'].n_to = room['stairway']
 room['library'].n_to = room['storage']
 room['library'].e_to = room['foyer']
 room['foyer'].w_to = room['library']
+room['outside'].e_to = room['vendor']
+room['vendor'].w_to = room['outside']
 
 
 # instantiate player
