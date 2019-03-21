@@ -138,13 +138,83 @@ class Player:
                             print(
                                 Fore.YELLOW + '\nThe lamp illuminates the entire room and you can finally see.\n' + Style.RESET_ALL)
                             break
-                        else:
+                        if self.location.is_light == True and i.name.lower() == 'lamp':
                             print(
                                 Fore.YELLOW + "\nThis won't do anything, it's already bright in here.\n" + Style.RESET_ALL)
+                        if i.name.lower() == 'pouch':
+                            print(
+                                Fore.YELLOW + '\nThere is nothing inside the pouch.\n' + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'sword':
+                            print(
+                                Fore.YELLOW + '\nYou swing the sword at nothing and only got yourself tired.\n' + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'coins':
+                            print(
+                                Fore.YELLOW + "\nYou can't do anything with the coins here.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'artibact' or i.name.lower() == 'artiract' or i.name.lower() == 'artiwact':
+                            print(
+                                Fore.YELLOW + f"\nYou can't do anything with {i.name} here\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'shield':
+                            print(
+                                Fore.YELLOW + "\nShield slips out of your hands and falls on your toes.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'bow':
+                            print(
+                                Fore.YELLOW + "\nCan't do anything with it; Bow is not functional\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'arrows':
+                            print(
+                                Fore.YELLOW + "\nYou throw the arrow against the wall and it breaks making it useless.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'jar':
+                            print(
+                                Fore.YELLOW + "\nYou take a sip from it but it's empty.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'flower':
+                            print(
+                                Fore.YELLOW + "\nSmelling the flower reminds you of back home.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'mirror':
+                            print(
+                                Fore.YELLOW + "\nYou admire yourself in the mirror as you walk into a wall.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'chalise':
+                            print(
+                                Fore.YELLOW + "\nYou raise the Chalise into the air and pretend to give a toast.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'crown':
+                            print(
+                                Fore.YELLOW + "\nYou put the crown on your head and immediately start to feel like a million schmeckles.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'ruby':
+                            print(
+                                Fore.YELLOW + "\nYou look through it and the surrounding turns red.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'emerald':
+                            print(
+                                Fore.YELLOW + "\nYou look through it and the surrounding turns green.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'pebbles':
+                            print(
+                                Fore.YELLOW + "\nYou throw one of the pebbles and a loud clank is heard as it hit a wall.\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'slingshot':
+                            print(
+                                Fore.YELLOW + "\nYou hear a faint voice yelling 'Deeeeennnnniiiiisssss.'\n" + Style.RESET_ALL)
+                            break
+                        if i.name.lower() == 'slime':
+                            print(
+                                Fore.YELLOW + "\nYou take a taste and immediately regret that decision.\n" + Style.RESET_ALL)
+                            break
 
+                    else:
+                        print(Fore.RED + "\nYou don't have that item.\n" +
+                              Style.RESET_ALL)
                 else:
-                    print(Fore.RED + "\nYou don't have that item.\n" +
-                          Style.RESET_ALL)
+                    return None
             else:
                 return None
         else:
