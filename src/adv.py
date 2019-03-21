@@ -210,13 +210,21 @@ def player_action(player_input):
                 if commands[1].lower() == i.name.lower():
                     currentPlayer.addItemToUser(i)
                     currentPlayer.location.removeItemFromRoom(i)
-                    print(f'\nYou take {i}.\n')
+                    print(Fore.YELLOW +
+                          f'\nYou picke up {i}\n' + Style.RESET_ALL)
+                break
+            else:
+                print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
         elif commands[0] == 'drop':
             for i in currentPlayer.items:
                 if commands[1].lower() == i.name.lower():
                     currentPlayer.removeItemFromUser(i)
                     currentPlayer.location.addItemToRoom(i)
-                    print(f'\nYou drop {i}.\n')
+                    print(Fore.YELLOW +
+                          f'\nYou dropped {i}\n' + Style.RESET_ALL)
+                break
+            else:
+                print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
         else:
             print(
                 Fore.RED + '\n--- Not a valid command, Try Again! ---\n' + Style.RESET_ALL)
