@@ -12,9 +12,12 @@ class Room:
         self.items.append(item)
 
     def removeItemFromRoom(self, item):
-        for i in self.items:
+        for index, i in enumerate(self.items):
             if i == item:
-                self.items.pop()
+                self.items.pop(index)
 
     def __str__(self):
+        return (f'{self.location} -- {self.items}\n + {self.description}')
+
+    def __repr__(self):
         return (f'{self.location} -- {self.items}\n + {self.description}')

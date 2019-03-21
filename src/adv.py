@@ -11,9 +11,9 @@ item = {
     'pouch': Item('Pouch', 'Old, slightly torn pouch, usefull for carrying things.'),
     'sword': Item('Sword', 'Dull sword; good for smashing things.'),
     'coins': Item('Coins', 'Unfamiliar coins, might still hold some value.'),
-    'shard1': Item('ArtiBact', 'Blue in color. Looks to be a piece of a bigger puzzle.'),
-    'shard2': Item('ArtiRact', 'Red in color. Looks to be a piece of a bigger puzzle.'),
-    'shard3': Item('ArtiWact', 'White in color. Looks to be a piece of a bigger puzzle.'),
+    'artibact': Item('ArtiBact', 'Blue in color. Looks to be a piece of a bigger puzzle.'),
+    'artiract': Item('ArtiRact', 'Red in color. Looks to be a piece of a bigger puzzle.'),
+    'artiwact': Item('ArtiWact', 'White in color. Looks to be a piece of a bigger puzzle.'),
     'shield': Item(
         'Shield', 'Rotting piece of wood that may have been used as a shield in the past.'),
     'bow': Item('Bow', 'Magnificently crafted bow; missing string to be functional!'),
@@ -41,14 +41,14 @@ passages run north and east.""", [item['lamp']]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", [item['flower'], item['shard1']]),
+the distance, but there is no way across the chasm.""", [item['flower'], item['artibact']]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air.""", [item['slime']]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south.""", [item['shard3'], item['pouch']]),
+earlier adventurers. The only exit is to the south.""", [item['artiwact'], item['pouch']]),
 
     'chamber': Room('Bed Chamber', """A finely furnished bed chamber, all the things
 are covered in dust and cob webs from years of neglect""", [item['mirror']]),
@@ -58,7 +58,7 @@ end of your adventure.""", [item['flower']]),
 
     'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [item['sword']]),
 
-    'dungeon': Room('Dungeon', """Torture devices are scattered throughout the room""", [item['shard2']]),
+    'dungeon': Room('Dungeon', """Torture devices are scattered throughout the room""", [item['artiract']]),
 
     'armory': Room('Armory', """A large room that used to hold a stockpile of weapons
 but now it sits mostly empty""", [item['bow'], item['arrows']]),
@@ -93,7 +93,6 @@ room['overlook'].s_to = room['foyer']
 room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
-
 room['narrow'].e_to = room['chamber']
 room['chamber'].s_to = room['cliff']
 room['chamber'].w_to = room['narrow']
@@ -142,74 +141,132 @@ room['foyer'].w_to = room['library']
 
 
 def player_movement(player_input):
-    global location
-    global locationItems
-    try:
-        if player_input == 'n' or player_input == 'N':
-            location = location.n_to
-            locationItems = []
-            print(Fore.YELLOW + '\n\n_-_-_-' +
-                  Style.RESET_ALL + ' Walked North\n')
-        elif player_input == 's' or player_input == 'S':
-            location = location.s_to
-            locationItems = []
-            print('\n_-_-_- Walked South\n\n')
-        elif player_input == 'e' or player_input == 'E':
-            location = location.e_to
-            locationItems = []
-            print('\n_-_-_- Walked East\n\n')
-        elif player_input == 'w' or player_input == 'W':
-            location = location.w_to
-            locationItems = []
-            print('\n_-_-_- Walked West\n\n')
-    except:
-        print('\nNot a valid command, Try Again!\n')
+
+    # if input only contains one work, we assume player wants to move
+    if len(player_input.split(' ')) == 1:
+        try:
+            if player_input.lower() == 'n':
+                currentPlayer.location = currentPlayer.location.n_to
+                print(Fore.YELLOW + '\n\n_-_-_-' +
+                      Style.RESET_ALL + ' Walked North\n')
+            elif player_input.lower() == 's':
+                currentPlayer.location = currentPlayer.location.s_to
+                print(Fore.YELLOW + '\n\n_-_-_-' +
+                      Style.RESET_ALL + ' Walked South\n\n')
+            elif player_input.lower() == 'e':
+                currentPlayer.location = currentPlayer.location.e_to
+                print(Fore.YELLOW + '\n\n_-_-_-' +
+                      Style.RESET_ALL + ' Walked East\n\n')
+            elif player_input.lower() == 'w':
+                currentPlayer.location = currentPlayer.location.w_to
+                print(Fore.YELLOW + '\n\n_-_-_-' +
+                      Style.RESET_ALL + ' Walked West\n\n')
+            elif player_input.lower() == 'q':
+                print('')
+            elif player_input.lower() == 'i':
+                inventory = []
+                print(Fore.CYAN + '\nPlayer Inventory' + Style.RESET_ALL)
+                for i in currentPlayer.items:
+                    inventory.append(i)
+                print(f'{inventory}\n')
+            elif player_input.lower() == 'help':
+                print('\nKeywords')
+                print(Back.BLUE + ' take ' + Style.RESET_ALL +
+                      ' -> Used with "item_name" to pick up item')
+                print(Back.BLUE + ' drop ' + Style.RESET_ALL +
+                      '-> Used with "item_name" to drop item')
+                print(Back.BLUE + ' i ' + Style.RESET_ALL +
+                      '-> Checks your inventory')
+                print(Back.BLUE + ' N,E,S,W ' + Style.RESET_ALL +
+                      '-> Cardinal directions to move player')
+                print(Fore.BLUE + ' Text ' + Style.RESET_ALL +
+                      '-> Name of current location')
+                print(Fore.GREEN + ' [] ' + Style.RESET_ALL +
+                      '-> Items visible in current location')
+                print(Fore.MAGENTA + ' ->[]<- ' + Style.RESET_ALL +
+                      '-> Directions you can move to from current location\n\n')
+            else:
+                print(
+                    Fore.RED + '\n--- Not a valid command, Try Again! ---\n' + Style.RESET_ALL)
+        except:
+            print(
+                Fore.RED + '\n--- Not a valid command, Try Again! ---\n' + Style.RESET_ALL)
+    else:
+        return None
+
+
+def player_action(player_input):
+
+    commands = player_input.split(" ")  # splits input into list
+
+    # if input contains more than 1 work we assume that player wants to perform an action
+    # more than 2 words will ask user to type command again
+    # if first command is not "take" or "drop", user will be asked to type command again
+
+    if len(player_input.split(' ')) > 1:
+
+        if commands[0] == 'take':
+            for i in currentPlayer.location.items:
+                if commands[1].lower() == i.name.lower():
+                    currentPlayer.addItemToUser(i)
+                    currentPlayer.location.removeItemFromRoom(i)
+                    print(f'\nYou take {i}.\n')
+        elif commands[0] == 'drop':
+            for i in currentPlayer.items:
+                if commands[1].lower() == i.name.lower():
+                    currentPlayer.removeItemFromUser(i)
+                    currentPlayer.location.addItemToRoom(i)
+                    print(f'\nYou drop {i}.\n')
+        else:
+            print(
+                Fore.RED + '\n--- Not a valid command, Try Again! ---\n' + Style.RESET_ALL)
+    else:
+        return None
 
 
 def available_directions():
-    global location
-    if location.location == 'Outside Cave Entrance':
-        print(Fore.RED + '-> [ N ] <-' + Style.RESET_ALL)
-    if location.location == 'Foyer':
-        print(Fore.RED + '-> [ N  E  S  W ] <-' + Style.RESET_ALL)
-    if location.location == 'Grand Overlook':
-        print(Fore.RED + '-> [ S ] <-' + Style.RESET_ALL)
-    if location.location == 'Narrow Passage':
-        print(Fore.RED + '-> [ N  E  W ] <-' + Style.RESET_ALL)
-    if location.location == 'Treasure Chamber':
-        print(Fore.RED + '-> [ N  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Bed Chamber':
-        print(Fore.RED + '-> [ W  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Cliff Edge':
-        print(Fore.RED + '-> [ N ] <-' + Style.RESET_ALL)
-    if location.location == 'Pungent Basement':
-        print(Fore.RED + '-> [ N  E  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Dungeon':
-        print(Fore.RED + '-> [ W  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Armory':
-        print(Fore.RED + '-> [ N ] <-' + Style.RESET_ALL)
-    if location.location == 'Wine Cellar':
-        print(Fore.RED + '-> [ W  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Long Corridor':
-        print(Fore.RED + '-> [ N  E  S  W ] <-' + Style.RESET_ALL)
-    if location.location == 'Fountain of Youth':
-        print(Fore.RED + '-> [ S ] <-' + Style.RESET_ALL)
-    if location.location == 'Alchemy Chamber':
-        print(Fore.RED + '-> [ N ] <-' + Style.RESET_ALL)
-    if location.location == 'Winding Stairway':
-        print(Fore.RED + '-> [ E  S ] <-' + Style.RESET_ALL)
-    if location.location == 'Storage Room':
-        print(Fore.RED + '-> [ N  S  W ] <-' + Style.RESET_ALL)
-    if location.location == 'Lavatory':
-        print(Fore.RED + '-> [ E ] <-' + Style.RESET_ALL)
-    if location.location == 'Grand Library':
-        print(Fore.RED + '-> [ N  E ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Outside Cave Entrance':
+        print(Fore.MAGENTA + '-> [ N ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Foyer':
+        print(Fore.MAGENTA + '-> [ N  E  S  W ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Grand Overlook':
+        print(Fore.MAGENTA + '-> [ S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Narrow Passage':
+        print(Fore.MAGENTA + '-> [ N  E  W ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Treasure Chamber':
+        print(Fore.MAGENTA + '-> [ N  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Bed Chamber':
+        print(Fore.MAGENTA + '-> [ W  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Cliff Edge':
+        print(Fore.MAGENTA + '-> [ N ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Pungent Basement':
+        print(Fore.MAGENTA + '-> [ N  E  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Dungeon':
+        print(Fore.MAGENTA + '-> [ W  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Armory':
+        print(Fore.MAGENTA + '-> [ N ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Wine Cellar':
+        print(Fore.MAGENTA + '-> [ W  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Long Corridor':
+        print(Fore.MAGENTA + '-> [ N  E  S  W ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Fountain of Youth':
+        print(Fore.MAGENTA + '-> [ S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Alchemy Chamber':
+        print(Fore.MAGENTA + '-> [ N ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Winding Stairway':
+        print(Fore.MAGENTA + '-> [ E  S ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Storage Room':
+        print(Fore.MAGENTA + '-> [ N  S  W ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Lavatory':
+        print(Fore.MAGENTA + '-> [ E ] <-' + Style.RESET_ALL)
+    if currentPlayer.location.location == 'Grand Library':
+        print(Fore.MAGENTA + '-> [ N  E ] <-' + Style.RESET_ALL)
 
 
-currentPlayer = Player('Johnny', room['outside'], [])
-location = currentPlayer.location
-locationItems = []
+# instantiate player
+currentPlayer = Player('', room['outside'], [])
 
+# Game Title Screen
 print('\n\n')
 print(Fore.BLUE + '====================================\n' + Style.RESET_ALL)
 print('|          ' + Fore.RED + 'Pointless  Quest' +
@@ -217,21 +274,24 @@ print('|          ' + Fore.RED + 'Pointless  Quest' +
 print('|        ' + Fore.YELLOW + '--------------------' +
       Style.RESET_ALL + '      |\n')
 print('|              Q to quit           |\n')
+print('|            Help for info         |\n')
 print(Fore.BLUE + '====================================\n' + Style.RESET_ALL)
 
 print('Enter your name to begin this Quest')
 currentPlayer.name = input('Your Name -> ')
 print(f"\n\n{currentPlayer.name}'s adventure begins!\n\n")
 
+
+# Main Game Loop
 while True:
-    print(Fore.BLUE + f'{location.location}\n' +
-          Style.RESET_ALL + f'{location.description}')
-    for item in location.items:
-        locationItems.append(item.name)
-    print(Fore.GREEN + f'{locationItems}' + Style.RESET_ALL)
+    locationItems = []
+    print(Fore.BLUE + f'{currentPlayer.location.location}\n' +
+          Style.RESET_ALL + f'{currentPlayer.location.description}')
+    print(Fore.GREEN + f'{currentPlayer.location.items}' + Style.RESET_ALL)
     available_directions()
     cmd = input('\nEnter command -> ')
     player_movement(cmd)
+    player_action(cmd)
     if cmd == 'q' or cmd == 'Q':
         print(Fore.YELLOW + '\nGoodbye!' + Style.RESET_ALL)
         break
