@@ -37,18 +37,17 @@ room = {
                      "North of you, the cave mount beckons.", [], True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", [item['lamp']], True),
+passages run north, east and west.""", [item['lamp']], True),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm.""", [item['flower'], item['artibact']], True),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air.""", [item['slime']], False),
+    'narrow':   Room("Narrow Passage", """A narrow passage, the smell of gold permeates the air.""", [item['slime']], False),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south.""", [item['artiwact'], item['pouch']], False),
+earlier adventurers.""", [item['artiwact'], item['pouch']], False),
 
     'chamber': Room('Bed Chamber', """A finely furnished bed chamber, all the things
 are covered in dust and cob webs from years of neglect""", [item['mirror']], True),
@@ -133,6 +132,7 @@ def playerCommands(cmd):
     currentPlayer.action_take(cmd)
     currentPlayer.action_drop(cmd)
     currentPlayer.action_use(cmd)
+    currentPlayer.action_look(cmd)
 
 
 # Game Title Screen
