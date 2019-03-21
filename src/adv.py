@@ -1,6 +1,7 @@
 from room import Room
 from player import Player
 from item import Item
+from treasure import Treasure
 from colorama import init, Fore, Back, Style
 init(convert=True)
 
@@ -10,21 +11,21 @@ item = {
     'lamp': Item('Lamp', 'An old forgoten lamp with some oil still remaining.'),
     'pouch': Item('Pouch', 'Old, slightly torn pouch, usefull for carrying things.'),
     'sword': Item('Sword', 'Dull sword; good for smashing things.'),
-    'coins': Item('Coins', 'Unfamiliar coins, might still hold some value.'),
-    'artibact': Item('ArtiBact', 'Blue in color. Looks to be a piece of a bigger puzzle.'),
-    'artiract': Item('ArtiRact', 'Red in color. Looks to be a piece of a bigger puzzle.'),
-    'artiwact': Item('ArtiWact', 'White in color. Looks to be a piece of a bigger puzzle.'),
+    'coins': Treasure('Coins', 'Unfamiliar coins, might still hold some value.', 20),
+    'artibact': Treasure('ArtiBact', 'Blue in color. Looks to be a piece of a bigger puzzle.', 35),
+    'artiract': Treasure('ArtiRact', 'Red in color. Looks to be a piece of a bigger puzzle.', 35),
+    'artiwact': Treasure('ArtiWact', 'White in color. Looks to be a piece of a bigger puzzle.', 35),
     'shield': Item(
         'Shield', 'Rotting piece of wood that may have been used as a shield in the past.'),
     'bow': Item('Bow', 'Magnificently crafted bow; missing string to be functional!'),
     'arrows': Item('Arrows', 'Deadly, pointy sticks.'),
     'jar': Item('Jar', 'Empty jar; can hold things.'),
     'flower': Item('Flower', 'A flower that grew out of stone.'),
-    'mirror': Item('Mirror', 'Antique mirror, looks valuable.'),
-    'chalise': Item('Chalise', 'A fancy cup to drink out of.'),
-    'crown': Item('Crown', 'Long lost crown of ...'),
-    'ruby': Item('Ruby', 'Precious stone; red I believe.'),
-    'emerald': Item('Emerald', 'Precious stone; green I think.'),
+    'mirror': Treasure('Mirror', 'Antique mirror, looks valuable.', 50),
+    'chalise': Treasure('Chalise', 'A fancy cup to drink out of.', 120),
+    'crown': Treasure('Crown', 'Long lost crown of ...', 200),
+    'ruby': Treasure('Ruby', 'Precious stone; red I believe.', 75),
+    'emerald': Treasure('Emerald', 'Precious stone; green I think.', 70),
     'pebbles': Item('Pebbles', 'No ordinary rocks, smooth edges.'),
     'slingshot': Item('Slingshot', "Dennis the Menace's favorite weapon."),
     'slime': Item('Slime', 'Mysterious smelling goo.'),
