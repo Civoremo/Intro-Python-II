@@ -2,6 +2,7 @@ from room import Room
 from player import Player
 from item import Item
 from treasure import Treasure
+from potion import Potion
 from weapon import Weapon
 from monster import Monster
 from colorama import init, Fore, Back, Style
@@ -34,24 +35,28 @@ item = {
     'pebbles': Item('Pebbles', 'No ordinary rocks, smooth edges.'),
     'slingshot': Weapon('Slingshot', "Dennis the Menace's favorite weapon.", 2),
     'slime': Item('Slime', 'Mysterious smelling goo.'),
-    'dagger': Weapon('Dagger', 'A fancy knife used for tabbing.', 2),
-    'hammer': Weapon('Hammer', 'A hammer Thor would be proud to have.', 4),
+    'potion5': Potion('Potion5', 'Slight boost to your HP.', 5),
+    'potion10': Potion('Potion10', 'Moderate boost to your HP.', 10),
+    'potion20': Potion('Potion20', 'Full health potion.', 20),
+    'poisonA': Potion('PoisonA', 'Looks appetizing.', -5),
+    'dagger': Weapon('Dagger', 'A fancy knife used for tabbing.', 1),
+    'hammer': Weapon('Hammer', 'A hammer Thor would be proud to have.', 3),
     'virus': Weapon('Virus', 'Highly infectious Zombie virus.', 2),
-    'femur': Weapon('Femur', 'A bone club.', 3),
+    'femur': Weapon('Femur', 'A bone club.', 1),
     'laser': Weapon('Laser', 'High intensity laser, can cause burns.', 3),
-    'banana': Weapon('Banana', 'Slippery banana peel.', 2)
+    'banana': Weapon('Banana', 'Slippery banana peel.', 1)
 }
 
 # Declare all the monsters
 # name, weapon, health=5
 
 monster = {
-    'goblin': Monster('Goblin', item['dagger'], 10),
-    'ogre': Monster('Ogre', item['hammer'], 18),
-    'skeleton': Monster('Skeleton', item['femur'], 12),
+    'goblin': Monster('Goblin', item['dagger'], 13),
+    'ogre': Monster('Ogre', item['hammer'], 9),
+    'skeleton': Monster('Skeleton', item['femur'], 14),
     'zombie': Monster('Zombie', item['virus'], 10),
-    'minion': Monster('Minion', item['banana'], 8),
-    'boss': Monster('Boss', item['laser'], 25)
+    'minion': Monster('Minion', item['banana'], 12),
+    'boss': Monster('Boss', item['laser'], 19)
 }
 
 
@@ -61,7 +66,7 @@ monster = {
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons.", [], [monster['boss']], True),
+                     "North of you, the cave mount beckons.", [], [], True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north, east and west.""", [item['lamp']], [], True),
@@ -80,7 +85,7 @@ earlier adventurers.""", [item['artiwact'], item['pouch']], [monster['minion']],
 are covered in dust and cob webs from years of neglect""", [item['mirror']], [], True),
 
     'cliff': Room('Cliff Edge', """Careful now, one small slip up and this could be the
-end of your adventure.""", [item['flower']], [], True),
+end of your adventure.""", [item['flower'],item['potion5']], [], True),
 
     'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [item['sword']], [], False),
 
@@ -96,11 +101,11 @@ but now it sits mostly empty""", [item['bow'], item['arrows']], [monster['ogre']
     'fountain': Room('Fountain of Youth', 'Elegantly decorated fountain; ice cold water still gushing.', [item['emerald'], item['ruby']], [monster['boss']], True),
 
     'alchemy': Room('Alchemy Chamber', """Elaborate contraptions scattered throughout the room
-accompanied by an unbearable stench.""", [item['jar'], item['coins']], [monster['zombie']], False),
+accompanied by an unbearable stench.""", [item['jar'], item['coins'], item['potion10']], [monster['zombie']], False),
 
     'stairway': Room('Winding Stairway', """Caution, uneven steps!""", [item['pebbles']], [], False),
 
-    'storage': Room('Storage Room', """Piles of junk knocked down on the floor""", [], [], False),
+    'storage': Room('Storage Room', """Piles of junk knocked down on the floor""", [item['poisonA']], [], False),
 
     'lavatory': Room('Lavatory', """Ocupado! sign tossed on the floor; doesn't
 look like it was cleaned any time recently""", [item['crown']], [], True),
@@ -154,7 +159,7 @@ room['vendor'].w_to = room['outside']
 
 
 # instantiate player
-currentPlayer = Player('', room['outside'], [item['sword']])
+currentPlayer = Player('', room['outside'], [])
 
 # player methods
 def playerCommands(cmd):
@@ -165,6 +170,7 @@ def playerCommands(cmd):
     currentPlayer.action_use(cmd)
     currentPlayer.action_look(cmd)
     currentPlayer.attack(cmd)
+    currentPlayer.use_potion(cmd)
 
 
 # Game Title Screen
