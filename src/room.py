@@ -8,11 +8,11 @@ class Room:
         self.description = description
         self.items = items
         self.monsters = monsters
+        self.is_light = is_light
         self.n_to = None
         self.s_to = None
         self.e_to = None
         self.w_to = None
-        self.is_light = is_light
 
     def __str__(self):
         return (f'{self.location} -- {self.items}\n{self.description}')

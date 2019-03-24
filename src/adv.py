@@ -8,6 +8,9 @@ from colorama import init, Fore, Back, Style
 init(convert=True)
 
 # Declare all available items
+# name,description
+# Weapon: name,description,attack_points
+# Treasure: name,description,value=0
 
 item = {
     'lamp': Item('Lamp', 'An old forgoten lamp with some oil still remaining.'),
@@ -39,6 +42,9 @@ item = {
     'banana': Weapon('Banana', 'Slippery banana peel.', 2)
 }
 
+# Declare all the monsters
+# name, weapon, health=5
+
 monster = {
     'goblin': Monster('Goblin', item['dagger'], 10),
     'ogre': Monster('Ogre', item['hammer'], 18),
@@ -51,10 +57,11 @@ monster = {
 
 
 # Declare all the rooms
+# Location,description,items,monsters,is_light
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons.", [], [], True),
+                     "North of you, the cave mount beckons.", [], [monster['boss']], True),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north, east and west.""", [item['lamp']], [], True),
@@ -147,9 +154,9 @@ room['vendor'].w_to = room['outside']
 
 
 # instantiate player
-currentPlayer = Player('', room['outside'], [])
+currentPlayer = Player('', room['outside'], [item['sword']])
 
-
+# player methods
 def playerCommands(cmd):
     currentPlayer.travel(cmd)
     currentPlayer.action_help(cmd)
@@ -157,6 +164,7 @@ def playerCommands(cmd):
     currentPlayer.action_drop(cmd)
     currentPlayer.action_use(cmd)
     currentPlayer.action_look(cmd)
+    currentPlayer.attack(cmd)
 
 
 # Game Title Screen
@@ -179,10 +187,14 @@ print(f"\n\n{currentPlayer.name}'s adventure begins!\n\n")
 while True:
     if currentPlayer.location.is_light == True:
         print(Fore.BLUE + f'{currentPlayer.location.location}\n' +
-              Style.RESET_ALL + f'{currentPlayer.location.description}\n{currentPlayer.location.monsters}')
+              Style.RESET_ALL + f'{currentPlayer.location.description}')
         print(Fore.GREEN + f'{currentPlayer.location.items}' + Style.RESET_ALL)
         print(Fore.MAGENTA +
-              f'-> [ {currentPlayer.location.available_exits()} ] <-' + Style.RESET_ALL)
+              f'-> [ {currentPlayer.location.available_exits()} ] <-\n' + Style.RESET_ALL)
+        if len(currentPlayer.location.monsters) > 0:
+            print(Back.RED + Fore.BLACK + f" {currentPlayer.location.monsters} " + Style.RESET_ALL)
+        else:
+            print(f'')
     else:
         print(Fore.YELLOW + "It's pitch black!\n" + Style.RESET_ALL)
     cmd = input('\nEnter command -> ')

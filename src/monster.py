@@ -6,4 +6,4 @@ class Monster(Humanoid):
         super().__init__(name, health)
 
     def __repr__(self):
-        return f'{self.name}-{self.weapon.name} AP:{self.weapon.attack_points}'
+        return f'{self.name}-{self.weapon.name} AP:{self.weapon.attack_points} HP:{self.health}'
