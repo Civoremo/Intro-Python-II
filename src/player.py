@@ -257,32 +257,21 @@ class Player(Humanoid):
 
     def attack(self, action):
         commands = action.split(' ')
-        print(f"entered: {action} {len(action.split(' '))}")
         if len(action.split(' ')) == 3:
             if commands[0] == 'use':
-                print(f'word is: {commands[0]}')
-                print(f'number of items: {len(self.items)}')
                 for item in self.items:
                     if commands[1].lower() == item.name.lower():
                         print(f'our weapon: {item.name}')
                         if hasattr(item, 'attack_points'):
-                            print(f'has attack points')
-                            print(f'ATTACK: {item.attack_points}')
                             for monster in self.location.monsters:
                                 if commands[2].lower() == monster.name.lower():
-                                    print(f'Monster: {monster.name} {monster}')
-                                    print(f'old health: {monster.health}')
                                     monster.health -= item.attack_points
-                                    print(f'new health:{monster.health}')
                                     print(Back.GREEN + Fore.BLACK + f'\n{item.name} attack SUCCESS!\n+{item.attack_points}' + Style.RESET_ALL)
-                                    print(Fore.RED + f'\n{monster.name} Defense Failed.\nRemaining Health: {monster.health}\n\n' + Style.RESET_ALL)
+                                    print(Fore.RED + f'\n{monster.name} Defense Failed.\nRemaining Health: {monster.health}' + Style.RESET_ALL)
                                     
-                                    print(f'player old health: {self.health}')
-                                    print(f'monster attack points: {monster.weapon.attack_points}')
                                     self.health -= monster.weapon.attack_points
-                                    print(f'new player health: {self.health}')
                                     print(Back.RED + Fore.BLACK + f'\n{monster.name} attack SUCCESS!\n+{item.attack_points}' + Style.RESET_ALL)
-                                    print(Fore.YELLOW + f'\nYour Defense Failed.\nRemaining Health: {self.health}\n\n' + Style.RESET_ALL)
+                                    print(Fore.YELLOW + f'\nYour Defense Failed.\nRemaining Health: {self.health}\n' + Style.RESET_ALL)
                                 else:
                                     print(f'No matching monsters found.')
                             else:
