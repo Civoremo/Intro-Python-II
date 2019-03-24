@@ -61,7 +61,8 @@ class Player(Humanoid):
                 for i in self.items:
                     inventory.append(i)
                 print(f'Items: {inventory}')
-                print(f'Schmekels: {self.schmekels}\n')
+                print(f'Schmekels: {self.schmekels}')
+                print(f'HP: {self.health}\n')
             elif action.lower() == 'help':
                 print('\nKeywords')
                 print(Back.BLUE + ' take ' + Style.RESET_ALL +
@@ -279,7 +280,22 @@ class Player(Humanoid):
                     else:
                         print(f'Did not match any item.')
                 else:
-                    return None
+                    print(Fore.RED + f'\nInvalid Command.\n' + Style.RESET_ALL)
+            else:
+                print(Fore.RED + f'\nInvalid Command.\n' + Style.RESET_ALL)
         else:
             return f'SOMETHING WENT WRONG'
                                 
+    def use_potion(self, action):
+        commands = action.split(' ')
+        if len(action.split(' ')) == 2:
+            if commands[0] == 'use':
+                for item in self.items:
+                    if commands[1].lower() == item.name.lower():
+                        print(f'typed potion: {item.name, item.action}')
+                        self.health += item.action
+                        self.removeItemFromUser(item)
+                        print(Fore.YELLOW + f'\nYou consume {item.name}.' + Style.RESET_ALL)
+                        print(Fore.YELLOW + f'Health Increase by {item.action}.\n' + Style.RESET_ALL)
+                else:
+                    print(f'\nInvaid potion.\n')
