@@ -1,15 +1,16 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
+from humanoid import Humanoid
 from colorama import init, Fore, Back, Style
 init(convert=True)
 
 
-class Player:
+class Player(Humanoid):
     def __init__(self, name, location, items, schmekels=0):
-        self.name = name
-        self.location = location
         self.items = items
+        self.location = location
         self.schmekels = schmekels
+        super().__init__(name, health=20)
 
     def __str__(self):
         return f'Your location: "{self.location}"'
