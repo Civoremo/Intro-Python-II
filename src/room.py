@@ -3,21 +3,22 @@
 
 
 class Room:
-    def __init__(self, location, description, items, is_light=False):
+    def __init__(self, location, description, items, monsters, is_light=False):
         self.location = location
         self.description = description
         self.items = items
+        self.monsters = monsters
+        self.is_light = is_light
         self.n_to = None
         self.s_to = None
         self.e_to = None
         self.w_to = None
-        self.is_light = is_light
 
     def __str__(self):
-        return (f'{self.location} -- {self.items}\n + {self.description}')
+        return (f'{self.location} -- {self.items}\n{self.description}')
 
     def __repr__(self):
-        return (f'{self.location} -- {self.items}\n + {self.description}')
+        return (f'{self.location} -- {self.items}\n{self.description}\n{self.monsters}')
 
     def addItemToRoom(self, item):
         self.items.append(item)

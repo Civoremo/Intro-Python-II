@@ -1,15 +1,16 @@
 # Write a class to hold player information, e.g. what room they are in
 # currently.
+from humanoid import Humanoid
 from colorama import init, Fore, Back, Style
 init(convert=True)
 
 
-class Player:
+class Player(Humanoid):
     def __init__(self, name, location, items, schmekels=0):
-        self.name = name
-        self.location = location
         self.items = items
+        self.location = location
         self.schmekels = schmekels
+        super().__init__(name, health=20)
 
     def __str__(self):
         return f'Your location: "{self.location}"'
@@ -253,3 +254,32 @@ class Player:
                     print(Fore.RED + '\nItem not found\n' + Style.RESET_ALL)
         else:
             return None
+
+    def attack(self, action):
+        commands = action.split(' ')
+        if len(action.split(' ')) == 3:
+            if commands[0] == 'use':
+                for item in self.items:
+                    if commands[1].lower() == item.name.lower():
+                        print(f'our weapon: {item.name}')
+                        if hasattr(item, 'attack_points'):
+                            for monster in self.location.monsters:
+                                if commands[2].lower() == monster.name.lower():
+                                    monster.health -= item.attack_points
+                                    print(Back.GREEN + Fore.BLACK + f'\n{item.name} attack SUCCESS!\n+{item.attack_points}' + Style.RESET_ALL)
+                                    print(Fore.RED + f'\n{monster.name} Defense Failed.\nRemaining Health: {monster.health}' + Style.RESET_ALL)
+                                    
+                                    self.health -= monster.weapon.attack_points
+                                    print(Back.RED + Fore.BLACK + f'\n{monster.name} attack SUCCESS!\n+{item.attack_points}' + Style.RESET_ALL)
+                                    print(Fore.YELLOW + f'\nYour Defense Failed.\nRemaining Health: {self.health}\n' + Style.RESET_ALL)
+                                else:
+                                    print(f'No matching monsters found.')
+                            else:
+                                return None
+                    else:
+                        print(f'Did not match any item.')
+                else:
+                    return None
+        else:
+            return f'SOMETHING WENT WRONG'
+                                
