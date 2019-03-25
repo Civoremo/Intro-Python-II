@@ -273,10 +273,15 @@ class Player(Humanoid):
                                     self.health -= monster.weapon.attack_points
                                     print(Back.RED + Fore.BLACK + f'\n{monster.name} attack SUCCESS!\n+{item.attack_points}' + Style.RESET_ALL)
                                     print(Fore.YELLOW + f'\nYour Defense Failed.\nRemaining Health: {self.health}\n' + Style.RESET_ALL)
+
+                                    if monster.health <= 0:
+                                        self.location.removeMonsterFromRoom(monster)
                                 else:
                                     print(f'No matching monsters found.')
                             else:
                                 return None
+                        else:
+                            return None
                     else:
                         print(f'Did not match any item.')
                 else:
@@ -289,7 +294,7 @@ class Player(Humanoid):
     def use_potion(self, action):
         commands = action.split(' ')
         if len(action.split(' ')) == 2:
-            if commands[0] == 'use':
+            if commands[0] == 'drink':
                 for item in self.items:
                     if commands[1].lower() == item.name.lower():
                         print(f'typed potion: {item.name, item.action}')

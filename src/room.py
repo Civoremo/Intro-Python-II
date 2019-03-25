@@ -28,17 +28,26 @@ class Room:
             if i == item:
                 self.items.pop(index)
 
+    def removeMonsterFromRoom(self, monster):
+        print(f'monster dead.\n')
+        for index, i in enumerate(self.monsters):
+            if i == monster:
+                self.monsters.pop(index)
+
     def get_new_location(self, direction):
-        if direction == "n":
-            return self.n_to
-        elif direction == "s":
-            return self.s_to
-        elif direction == "e":
-            return self.e_to
-        elif direction == "w":
-            return self.w_to
+        if len(self.monsters) == 0:
+            if direction == "n":
+                return self.n_to
+            elif direction == "s":
+                return self.s_to
+            elif direction == "e":
+                return self.e_to
+            elif direction == "w":
+                return self.w_to
+            else:
+                return None
         else:
-            return None
+            print(f'Exit is blocked!')
 
     def available_exits(self):
         exits = []
