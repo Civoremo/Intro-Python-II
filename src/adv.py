@@ -87,7 +87,7 @@ are covered in dust and cob webs from years of neglect""", [item['mirror']], [],
     'cliff': Room('Cliff Edge', """Careful now, one small slip up and this could be the
 end of your adventure.""", [item['flower'],item['potion5']], [], True),
 
-    'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [item['sword']], [], False),
+    'basement': Room('Pungent Basement', """Dark, cold, damp basement; gives me the creeps""", [], [], False),
 
     'dungeon': Room('Dungeon', """Torture devices are scattered throughout the room""", [item['artiract']], [], False),
 
@@ -159,7 +159,7 @@ room['vendor'].w_to = room['outside']
 
 
 # instantiate player
-currentPlayer = Player('', room['outside'], [])
+currentPlayer = Player('', room['outside'], [item['sword']])
 
 # player methods
 def playerCommands(cmd):
